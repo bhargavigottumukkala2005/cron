@@ -2,8 +2,7 @@ import requests
 import json
 import base64
 import os
-from api.utils import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
-from api.utils import load_tokens, save_tokens, refresh_access_token, schedule_meeting
+from utils import load_tokens, save_tokens, refresh_access_token, schedule_meeting
 
 # Rest of your code
 
