@@ -3,6 +3,13 @@ import json
 import base64
 import os
 
+CLIENT_ID = os.getenv('CLIENT_ID')
+CLIENT_SECRET = os.getenv('CLIENT_SECRET')
+REDIRECT_URI = os.getenv('REDIRECT_URI')
+
+# Rest of your code
+
+
 def load_tokens():
     token_file = 'zoom_tokens.json'
     if os.path.exists(token_file):
