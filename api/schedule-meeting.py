@@ -1,7 +1,7 @@
 import requests
 import json
 import os
-from api.utils import load_tokens, save_tokens, refresh_access_token, schedule_meeting
+from utils import load_tokens, save_tokens, refresh_access_token, schedule_meeting
 
 def main():
     tokens = load_tokens()
