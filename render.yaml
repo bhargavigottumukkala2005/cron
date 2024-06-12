@@ -5,11 +5,11 @@ services:
     schedule: "0 * * * *" # This runs the job every hour
     command: "api/schedule-meeting.py"
     envVars:
-      - key: ZOOM_CLIENT_ID
+      - key: client_id
         value: your_zoom_client_id
-      - key: ZOOM_CLIENT_SECRET
+      - key: client_secret
         value: your_zoom_client_secret
-      - key: ZOOM_REDIRECT_URI
+      - key: redirect_uri
         value: your_redirect_uri
 
 
