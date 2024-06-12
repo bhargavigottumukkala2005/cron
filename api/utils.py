@@ -16,8 +16,8 @@ def save_tokens(tokens):
         json.dump(tokens, f)
 
 def refresh_access_token(refresh_token):
-    client_id = os.getenv('ZOOM_CLIENT_ID')
-    client_secret = os.getenv('ZOOM_CLIENT_SECRET')
+    client_id = os.getenv('CLIENT_ID')
+    client_secret = os.getenv('CLIENT_SECRET')
     
     token_url = "https://zoom.us/oauth/token"
     headers = {
@@ -73,3 +73,4 @@ def schedule_meeting(access_token):
         return join_url
     else:
         return None
+
