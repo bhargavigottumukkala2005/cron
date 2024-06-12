@@ -1,0 +1,100 @@
+# module.exports = (req, res) => {
+  #  res.status(200).json({ message: 'Hello, World!' });
+ # };
+import requests
+import json
+import base64
+import os
+
+# Function to load tokens from a file
+def load_tokens():
+    token_file = 'zoom_tokens.json'
+    if os.path.exists(token_file):
+        with open(token_file, 'r') as f:
+            return json.load(f)
+    return {}
+
+# Function to save tokens to a file
+def save_tokens(tokens):
+    token_file = 'zoom_tokens.json'
+    with open(token_file, 'w') as f:
+        json.dump(tokens, f)
+
+# Function to refresh the access token
+def refresh_access_token(refresh_token):
+    client_id = os.getenv('ZOOM_CLIENT_ID')
+    client_secret = os.getenv('ZOOM_CLIENT_SECRET')
+    
+    token_url = "https://zoom.us/oauth/token"
+    headers = {
+        "Authorization": f"Basic {base64.b64encode((client_id + ':' + client_secret).encode()).decode()}",
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+    payload = {
+        "grant_type": "refresh_token",
+        "refresh_token": refresh_token
+    }
+    response = requests.post(token_url, headers=headers, data=payload)
+    response_data = response.json()
+    if 'access_token' in response_data:
+        save_tokens(response_data)  
+        return response_data.get("access_token")
+    else:
+        print("Failed to refresh access token.")
+        return None
+
+# Function to schedule a meeting
+def schedule_meeting(access_token):
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Content-Type': 'application/json'
+    }
+    
+    meeting_details = {
+        "topic": "Automated Meeting",
+        "type": 2,  
+        "start_time": "2024-06-04T7:20:00Z",  
+        "duration": 60,  
+        "timezone": "UTC",
+        "agenda": "This is an automated meeting",
+        "settings": {
+            "host_video": True,
+            "participant_video": True,
+            "join_before_host": False,
+            "mute_upon_entry": True,
+            "watermark": True,
+            "use_pmi": False,
+            "approval_type": 0,  
+            "registration_type": 1, 
+            "audio": "both",  
+            "auto_recording": "cloud"
+        }
+    }
+    
+    user_id = 'me'  
+    response = requests.post(f'https://api.zoom.us/v2/users/{user_id}/meetings', headers=headers, json=meeting_details)
+    
+    if response.status_code == 201:
+        meeting = response.json()
+        join_url = meeting.get('join_url')
+        return join_url
+    else:
+        return None
+
+# Main function to be executed by the cron job
+def main():
+    tokens = load_tokens()
+    
+    if 'access_token' in tokens:
+        access_token = tokens['access_token']
+        join_url = schedule_meeting(access_token)
+        if join_url:
+            print("Meeting scheduled successfully!")
+            print("Join URL:", join_url)
+        else:
+            print("Failed to schedule meeting.")
+    else:
+        print("No access token found. Make sure to obtain one.")
+
+if __name__ == "__main__":
+    main()

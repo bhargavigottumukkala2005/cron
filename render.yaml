@@ -1,0 +1,13 @@
+services:
+  - type: cron
+    name: zoom-scheduler
+    env: python3
+    schedule: "0 * * * *" # This runs the job every hour
+    command: ["python", "api/schedule_meeting.py"]
+    envVars:
+      - key: ZOOM_CLIENT_ID
+        value: your_zoom_client_id
+      - key: ZOOM_CLIENT_SECRET
+        value: your_zoom_client_secret
+      - key: ZOOM_REDIRECT_URI
+        value: your_redirect_uri
