@@ -1,15 +1,11 @@
 services:
-  - type: cron
+  - type: worker
     name: zoom-scheduler
-    env: python3
-    schedule: "0 * * * *" # This runs the job every hour
-    command: python api/schedule-meeting.py
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python api/schedule-meeting.py"
     envVars:
-      - key: ZOOM_CLIENT_ID
-        value: your_zoom_client_id
-      - key: ZOOM_CLIENT_SECRET
-        value: your_zoom_client_secret
-      - key: ZOOM_REDIRECT_URI
-        value: your_redirect_uri
-    port: 3000 # Choose a port number that's not already in use
-
+      - key: CLIENT_ID
+        fromEnv: CLIENT_ID
+      - key: CLIENT_SECRET
+        fromEnv: CLIENT_SECRET
