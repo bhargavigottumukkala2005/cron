@@ -3,7 +3,7 @@ services:
     name: zoom-scheduler
     env: python3
     schedule: "0 * * * *" # This runs the job every hour
-    command: "python api/schedule-meeting.py" # Update this line
+    command: python src/api/schedule-meeting.py
     envVars:
       - key: CLIENT_ID
         value: your_zoom_client_id
@@ -11,6 +11,7 @@ services:
         value: your_zoom_client_secret
       - key: REDIRECT_URI
         value: your_redirect_uri
+
 
 
 
