@@ -1,12 +1,11 @@
 services:
-  - type: worker  # Change from web to worker
-    name: Taskcronjobrender-real  # Make sure this matches your Render service name for consistency
-    env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "python api/schedule-meeting.py"
-    envVars:
+  - name: task-cron-job-render
+    type: background
+    env:
       - key: CLIENT_ID
-        value: YOUR_CLIENT_ID
+        scope: private
       - key: CLIENT_SECRET
-        value: YOUR_CLIENT_SECRET
+        scope: private
+    buildCommand: python -m pip install -r requirements.txt
+    startCommand: python api/schedule-meeting.py
 
