@@ -1,11 +1,16 @@
+# render.yaml
+
 services:
-  - name: task-cron-job-render
-    type: background
+  - name: cron
     env:
       - key: CLIENT_ID
-        scope: private
+        value: YOUR_ZOOM_CLIENT_ID_HERE
       - key: CLIENT_SECRET
-        scope: private
-    buildCommand: python -m pip install -r requirements.txt
-    startCommand: python api/schedule-meeting.py
+        value: YOUR_ZOOM_CLIENT_SECRET_HERE
+    build_command: python -m pip install -r requirements.txt
+    start_command: python api/schedule-meeting.py
+
+
+
+
 
