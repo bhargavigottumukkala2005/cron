@@ -1,5 +1,5 @@
 services:
-  - type: background worker
+  - type: worker
     name: zoom-scheduler
     env: python
     buildCommand: "pip install -r requirements.txt"
