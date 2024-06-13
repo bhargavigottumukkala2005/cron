@@ -1,15 +1,14 @@
-# render.yaml
-
 services:
-  - name: cron
-    env:
+  - type: worker
+    name: zoom-scheduler
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python api/schedule-meeting.py"
+    envVars:
       - key: CLIENT_ID
-        value: YOUR_ZOOM_CLIENT_ID_HERE
+        fromEnv: CLIENT_ID
       - key: CLIENT_SECRET
-        value: YOUR_ZOOM_CLIENT_SECRET_HERE
-    build_command: python -m pip install -r requirements.txt
-    start_command: python api/schedule-meeting.py
-
+        fromEnv: CLIENT_SECRET
 
 
 
