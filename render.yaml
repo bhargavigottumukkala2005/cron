@@ -1,11 +1,11 @@
 services:
-  - type: worker
-    name: zoom-scheduler
+  - type: worker  # Change from web to worker
+    name: Taskcronjobrender-real  # Make sure this matches your Render service name for consistency
     env: python
     buildCommand: "pip install -r requirements.txt"
     startCommand: "python api/schedule-meeting.py"
     envVars:
       - key: CLIENT_ID
-        fromEnv: CLIENT_ID
+        value: YOUR_CLIENT_ID
       - key: CLIENT_SECRET
-        fromEnv: CLIENT_SECRET
+        value: YOUR_CLIENT_SECRET
