@@ -34,7 +34,7 @@ else:
 meeting_details = {
     "topic": "Test Meeting",
     "type": 2,
-    "start_time": "2024-06-14T15:00:00Z",
+    "start_time": "2024-06-15T15:00:00Z",
     "duration": 30,
     "timezone": "UTC",
     "agenda": "This is a test meeting",
