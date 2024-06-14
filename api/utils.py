@@ -1,49 +1,77 @@
-import json
 import requests
+import json
 import base64
+import os
 
-def load_tokens(filename):
-    try:
-        with open(filename, 'r') as file:
-            return json.load(file)
-    except FileNotFoundError:
-        return {}
+def load_tokens():
+    token_file = 'api/zoom_tokens.json'
+    if os.path.exists(token_file):
+        with open(token_file, 'r') as f:
+            return json.load(f)
+    return {}
 
-def save_tokens(filename, tokens):
-    with open(filename, 'w') as file:
-        json.dump(tokens, file)
+def save_tokens(tokens):
+    token_file = 'api/zoom_tokens.json'
+    with open(token_file, 'w') as f:
+        json.dump(tokens, f)
 
-def refresh_access_token(client_id, client_secret, refresh_token):
-    url = 'https://zoom.us/oauth/token'
-    auth_string = f"{client_id}:{client_secret}"
-    b64_auth_string = base64.b64encode(auth_string.encode()).decode()
-
+def refresh_access_token(refresh_token):
+    client_id = os.getenv('CLIENT_ID')
+    client_secret = os.getenv('CLIENT_SECRET')
+    
+    token_url = "https://zoom.us/oauth/token"
     headers = {
-        'Authorization': f'Basic {b64_auth_string}',
-        'Content-Type': 'application/x-www-form-urlencoded'
+        "Authorization": f"Basic {base64.b64encode((client_id + ':' + client_secret).encode()).decode()}",
+        "Content-Type": "application/x-www-form-urlencoded"
     }
-    data = {
-        'grant_type': 'refresh_token',
-        'refresh_token': refresh_token
+    payload = {
+        "grant_type": "refresh_token",
+        "refresh_token": refresh_token
     }
-    response = requests.post(url, headers=headers, data=data)
-    if response.status_code == 200:
-        return response.json()
+    response = requests.post(token_url, headers=headers, data=payload)
+    response_data = response.json()
+    if 'access_token' in response_data:
+        save_tokens(response_data)  
+        return response_data.get("access_token")
     else:
-        print(f"Failed to refresh access token: {response.status_code} - {response.text}")
+        print("Failed to refresh access token.")
         return None
 
-def schedule_meeting(access_token, meeting_details):
-    url = 'https://api.zoom.us/v2/users/me/meetings'
+def schedule_meeting(access_token):
     headers = {
         'Authorization': f'Bearer {access_token}',
         'Content-Type': 'application/json'
     }
-    response = requests.post(url, headers=headers, json=meeting_details)
+    
+    meeting_details = {
+        "topic": "Automated Meeting",
+        "type": 2,  
+        "start_time": "2024-06-04T7:20:00Z",  
+        "duration": 60,  
+        "timezone": "UTC",
+        "agenda": "This is an automated meeting",
+        "settings": {
+            "host_video": True,
+            "participant_video": True,
+            "join_before_host": False,
+            "mute_upon_entry": True,
+            "watermark": True,
+            "use_pmi": False,
+            "approval_type": 0,  
+            "registration_type": 1, 
+            "audio": "both",  
+            "auto_recording": "cloud"
+        }
+    }
+    
+    user_id = 'me'  
+    response = requests.post(f'https://api.zoom.us/v2/users/{user_id}/meetings', headers=headers, json=meeting_details)
+    
     if response.status_code == 201:
-        return response.json().get('join_url')
+        meeting = response.json()
+        join_url = meeting.get('join_url')
+        return join_url
     else:
-        print(f"Failed to schedule meeting: {response.status_code} - {response.text}")
         return None
 
 
