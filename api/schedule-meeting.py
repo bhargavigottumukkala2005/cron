@@ -1,6 +1,6 @@
 import os
 import json
-from api.utils import load_tokens, save_tokens, refresh_access_token, schedule_meeting
+from utils import load_tokens, save_tokens, refresh_access_token, schedule_meeting
 
 # Load environment variables
 ZOOM_CLIENT_ID = os.environ.get('ZOOM_CLIENT_ID')
