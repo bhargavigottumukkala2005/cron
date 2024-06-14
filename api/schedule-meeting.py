@@ -12,7 +12,7 @@ if not ZOOM_CLIENT_ID or not ZOOM_CLIENT_SECRET:
 # Load Zoom tokens from file
 tokens = load_tokens('api/zoom_tokens.json')
 
-# Refresh access token if necessary
+# Check if tokens are missing
 if 'access_token' not in tokens or 'refresh_token' not in tokens:
     print("Missing access or refresh token.")
     exit(1)
@@ -26,12 +26,15 @@ if new_tokens:
     access_token = new_tokens['access_token']
     refresh_token = new_tokens['refresh_token']
     save_tokens('api/zoom_tokens.json', new_tokens)
+else:
+    print("Failed to refresh access token.")
+    exit(1)
 
 # Define meeting details
 meeting_details = {
     "topic": "Test Meeting",
     "type": 2,
-    "start_time": "2024-06-15T15:00:00Z",
+    "start_time": "2024-06-14T15:00:00Z",
     "duration": 30,
     "timezone": "UTC",
     "agenda": "This is a test meeting",
@@ -54,4 +57,5 @@ if join_url:
     print(f"Meeting scheduled successfully!\nJoin URL: {join_url}")
 else:
     print("Failed to schedule meeting.")
+
 
