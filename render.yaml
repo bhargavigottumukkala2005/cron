@@ -1,6 +1,6 @@
 services:
   - type: background
-    name: taskcronjobrender
+    name: task-cron-job-render
     env: python
     buildCommand: "pip install -r requirements.txt"
     startCommand: "python api/schedule-meeting.py"
@@ -9,6 +9,7 @@ services:
         fromSecret: ZOOM_CLIENT_ID
       - key: ZOOM_CLIENT_SECRET
         fromSecret: ZOOM_CLIENT_SECRET
+
 
 
 
