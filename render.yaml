@@ -2,7 +2,7 @@ services:
   - type: worker
     name: zoom-scheduler
     env: python
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: "pip install -r requirements.txt" 
     startCommand: "python api/schedule-meeting.py"
     envVars:
       - key: CLIENT_ID
