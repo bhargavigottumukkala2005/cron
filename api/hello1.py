@@ -9,7 +9,7 @@ app = Flask(__name__)
 # Zoom OAuth credentials
 CLIENT_ID = 'iZ6BVr8SIeWdQPNE9bz9Q'
 CLIENT_SECRET = 'k6OPn14WekgEvyZS8bkz4kO3O0Tv23G9'
-REDIRECT_URI = 'http://localhost:3000/callback'
+REDIRECT_URI = 'http://localhost:4000/callback'
 
 TOKEN_FILE = 'zoom_tokens.json'
 
@@ -117,4 +117,4 @@ def schedule_meeting(access_token):
         return None
 
 if __name__ == "__main__":
-    app.run(port=3000)
+    app.run(port=4000)
