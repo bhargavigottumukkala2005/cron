@@ -22,8 +22,8 @@ def save_tokens(tokens):
 
 # Function to refresh the access token
 def refresh_access_token(refresh_token):
-    client_id = os.getenv('ZOOM_CLIENT_ID')
-    client_secret = os.getenv('ZOOM_CLIENT_SECRET')
+    client_id = os.getenv('CLIENT_ID')
+    client_secret = os.getenv('CLIENT_SECRET')
     
     token_url = "https://zoom.us/oauth/token"
     headers = {
