@@ -18,7 +18,7 @@ def save_tokens(tokens):
 def refresh_access_token(refresh_token):
     client_id = os.getenv('CLIENT_ID')
     client_secret = os.getenv('CLIENT_SECRET')
-
+    
     token_url = "https://zoom.us/oauth/token"
     headers = {
         "Authorization": f"Basic {base64.b64encode((client_id + ':' + client_secret).encode()).decode()}",
@@ -28,20 +28,13 @@ def refresh_access_token(refresh_token):
         "grant_type": "refresh_token",
         "refresh_token": refresh_token
     }
-
-    try:
-        response = requests.post(token_url, headers=headers, data=payload)
-        response_data = response.json()
-
-        if 'access_token' in response_data:
-            save_tokens(response_data)
-            return response_data.get("access_token")
-        else:
-            print("Failed to refresh access token:", response_data.get('error_description', 'Unknown error'))
-            return None
-
-    except requests.exceptions.RequestException as e:
-        print("Failed to refresh access token:", str(e))
+    response = requests.post(token_url, headers=headers, data=payload)
+    response_data = response.json()
+    if 'access_token' in response_data:
+        save_tokens(response_data)  
+        return response_data.get("access_token")
+    else:
+        print("Failed to refresh access token.")
         return None
 
 def schedule_meeting(access_token):
@@ -79,9 +72,4 @@ def schedule_meeting(access_token):
         join_url = meeting.get('join_url')
         return join_url
     else:
-        print("Failed to schedule meeting:", response.json())
         return None
-
-
-
-
