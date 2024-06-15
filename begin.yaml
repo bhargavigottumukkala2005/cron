@@ -1,0 +1,23 @@
+# Begin configuration file for deploying a serverless Python app
+
+version: 1
+
+# Define the service
+functions:
+  api:
+    # Specify the source directory for the function
+    src: api/
+    # Specify the runtime environment
+    runtime: python3.8
+    # Specify the handler function
+    handler: schedule-meeting.main
+
+# Specify Python packages
+dependencies:
+  python:
+    - requirements.txt
+
+# Define the environment variables
+env:
+  - CLIENT_ID: "your-client-id-here"
+  - CLIENT_SECRET: "your-client-secret-here"
