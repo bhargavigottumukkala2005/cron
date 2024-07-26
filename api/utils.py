@@ -73,6 +73,3 @@ def schedule_meeting(access_token):
         return join_url
     else:
         return None
-
-
-

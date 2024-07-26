@@ -6,7 +6,7 @@ from utils import load_tokens, save_tokens, refresh_access_token, schedule_meeti
 def main():
     tokens = load_tokens()
 
-    if 'refresh_token' in tokens: 
+    if 'refresh_token' in tokens:
         # Refresh the access token if needed
         access_token = refresh_access_token(tokens['refresh_token'])
     else:
@@ -25,6 +25,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
