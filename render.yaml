@@ -1,17 +1,23 @@
 services:
-  - type: worker
+  - type: web
     name: zoom-scheduler
     env: python
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: ""
     startCommand: "python api/hello4.py"
     envVars:
       - key: CLIENT_ID
-        fromEnv: CLIENT_ID
+        value: _6KMf8b7RJuB10ydU_bKGA
       - key: CLIENT_SECRET
-        fromEnv: CLIENT_SECRET
+        value: HbQRz9vf3hAFeqQXD1uat2biYCTYS4gh
+    plan: free # or the plan you want to use
 
-
-
-
-
-
+  - type: cron
+    name: zoom-scheduler-cron
+    env: python
+    schedule: "@hourly"
+    command: "python api/hello4.py"
+    envVars:
+      - key: CLIENT_ID
+        value: _6KMf8b7RJuB10ydU_bKGA
+      - key: CLIENT_SECRET
+        value: HbQRz9vf3hAFeqQXD1uat2biYCTYS4gh
